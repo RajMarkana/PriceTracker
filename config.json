@@ -1,0 +1,23 @@
+{
+    "products": [
+        {
+            "name": "Noise Colorfit Icon 2 1.8'' Display with Bluetooth Calling, AI Voice Assistant Smartwatch  (Silver Grey Strap, Regular)",
+            "url": "https://www.flipkart.com/noise-colorfit-icon-2-1-8-display-bluetooth-calling-ai-voice-assistant-smartwatch/p/itm951e094061071?pid=SMWGEH7WGUSZCT4W&lid=LSTSMWGEH7WGUSZCT4WUGZAKG&marketplace=FLIPKART&store=ajy&srno=b_1_13&otracker=browse&fm=organic&iid=af2b58d3-beab-433c-bee9-0ad391f8cf41.SMWGEH7WGUSZCT4W.SEARCH&ppt=browse&ppn=browse&ssid=4fk93emf400000001748160795286",
+            "selector": ".Nx9bqj ",
+            "threshold": 1500
+        },
+        {
+            "name": "Apple iPhone 16 (Black, 128 GB)",
+            "url": "https://www.flipkart.com/apple-iphone-16-black-128-gb/p/itmb07d67f995271?pid=MOBH4DQFG8NKFRDY&lid=LSTMOBH4DQFG8NKFRDYNBDOZI&marketplace=FLIPKART&q=iphone+16&store=tyy%2F4io&spotlightTagId=default_BestsellerId_tyy%2F4io&srno=s_1_1&otracker=AS_QueryStore_OrganicAutoSuggest_2_5_na_na_na&otracker1=AS_QueryStore_OrganicAutoSuggest_2_5_na_na_na&fm=search-autosuggest&iid=3211bec0-5b98-419a-8e5c-e71f11c719e4.MOBH4DQFG8NKFRDY.SEARCH&ppt=sp&ppn=sp&ssid=aihmmp63vk0000001748161159430&qH=9ea15d2374058112",
+            "selector": ".Nx9bqj ",
+            "threshold": 70000
+        }
+
+    ],
+    "email": {
+        "enabled": true,
+        "recipients": ["rajmarkana1324@gmail.com"]
+    },
+    "check_interval": 1,
+    "data_file": "price_history.csv"
+}
