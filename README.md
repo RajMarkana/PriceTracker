@@ -29,7 +29,7 @@ PriceTracker is a simple tool that helps you keep track of prices of products yo
 
 To install PriceTracker, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/PriceTracker.git`
+1. Clone the repository: `git clone https://github.com/RajMarkana/PriceTracker.git`
 2. Install dependencies using UV: `uv install`
 3. Create a configuration file: `config.json` (see [Configuration](#configuration) for details)
 4. Create a `.env` file with your email credentials:
