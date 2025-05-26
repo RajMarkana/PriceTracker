@@ -2,6 +2,8 @@ from tracker import PriceTracker
 import logging
 import colorlog
 import os
+os.system('cls')
+
 
 os.makedirs("logs", exist_ok=True)
 console_handler = colorlog.StreamHandler()

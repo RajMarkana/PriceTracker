@@ -5,8 +5,42 @@ import os
 import logging
 from utils import scrape_price
 from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
 load_dotenv()
+
+llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp")
+
+summarize_prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            """You are an expert at creating concise product summaries. 
+                IMPORTANT RULES:
+                - Start directly with the product information
+                - Do NOT include phrases like "Here's your summary", "Summary:", or any introductory text
+                - Be direct and informative
+                - Maximum 2 lines""",
+        ),
+        (
+            "human",
+            """Create a 2-line summary for this product price alert:
+                    
+                Product Name: {product_name}
+                Current Price: ₹{current_price}
+                Target Price: ₹{target_price}
+                Product URL: {product_url}
+                Status: {status}
+
+                Provide a brief, engaging summary that highlights the key information and any potential savings.""",
+        ),
+    ]
+)
+
+
+summarize_chain = summarize_prompt | llm | StrOutputParser()
 
 
 def send_email_alert(product, price, config, is_initial=False):
@@ -24,6 +58,26 @@ def send_email_alert(product, price, config, is_initial=False):
         if not is_initial
         else f"Tracking Started: {product['name']}"
     )
+    status = (
+        "Price dropped below target!"
+        if price <= product["threshold"]
+        else "Monitoring for price drops"
+    )
+
+    try:
+        summary = summarize_chain.invoke(
+            {
+                "product_name": product["name"],
+                "current_price": price,
+                "target_price": product["threshold"],
+                "product_url": product["url"],
+                "status": status,
+            }
+        )
+    except Exception as e:
+        logging.error(f"Error generating summary: {e}")
+        summary = f"{product['name']} is currently priced at ₹{price:.2f}. Target price is ₹{product['threshold']:.2f}."
+
     body = f"""
 <html>
 <head>
@@ -140,6 +194,25 @@ def send_email_alert(product, price, config, is_initial=False):
         font-weight: 500;
     }}
     
+    .summary {{
+        background-color: #f0f4f8;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #4f46e5;
+    }}
+    
+    .summary-title {{
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 8px;
+    }}
+    
+    .summary-text {{
+        color: #4a5568;
+        line-height: 1.6;
+    }}
+    
     a{{
         color: #ffffff;
         display: block;
@@ -197,12 +270,17 @@ def send_email_alert(product, price, config, is_initial=False):
     
     {'<div class="savings-message">You save ₹' + f'{product["threshold"] - price:.2f}' + ' at current price</div>' if price <= product['threshold'] else ''}
     
+    <div class="summary">
+        <div class="summary-title">📝 Summary</div>
+        <div class="summary-text">{summary}</div>
+    </div>
+    
     <a href="{product['url']}" target="_blank">
         <span class="button-text">{'Buy Now →' if price <= product['threshold'] else 'View Product →'}</span>
     </a>
     
     <div class="footer">
-        <p>Price Tracker Bot • Automated Monitoring</p>
+        <p>🤖 Price Tracker Bot • Automated Monitoring</p>
     </div>
 </div>
 </body>
@@ -235,8 +313,8 @@ def send_startup_email(config):
         price = scrape_price(p)
         if price is None:
             continue
-        status_text = "Below" if price <= p['threshold'] else "Above"
-        status_class = "below" if price <= p['threshold'] else "above"
+        status_text = "Below" if price <= p["threshold"] else "Above"
+        status_class = "below" if price <= p["threshold"] else "above"
         products_html += f"""
 <tr>
     <td>{p['name']}</td>
@@ -376,7 +454,7 @@ def send_startup_email(config):
     </table>
     
     <div class="footer">
-        <p>🤖 Price Tracker Bot • Checking prices every hour</p>
+        <p>🤖 Price Tracker Bot • Automated Monitoring</p>
     </div>
 </div>
 </body>

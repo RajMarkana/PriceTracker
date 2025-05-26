@@ -1,5 +1,5 @@
 
-# PriceTracker
+# PriceTracker📈
 
 A Python-based price tracking tool that monitors prices of products and sends alerts when prices drop below a certain threshold.
 
@@ -23,6 +23,7 @@ PriceTracker is a simple tool that helps you keep track of prices of products yo
 * Send email alerts when prices drop below a certain threshold
 * Store price history in a CSV file
 * Configure product information and alert thresholds using a JSON configuration file
+* AI-Powered Summary Generation: Utilize the Google Gemini model to generate high-quality summaries of product price alerts
 
 ## Installation
 
@@ -35,6 +36,7 @@ To install PriceTracker, follow these steps:
 ```bash
 EMAIL_ID=your-email@example.com
 EMAIL_PASSWORD=your-email-app-password
+GOOGLE_API_KEY=your-gemini-api-key
 ```
 
 ## Usage
